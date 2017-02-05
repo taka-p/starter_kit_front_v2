@@ -3,21 +3,20 @@
 ## 使い方
 
 ### 初期設定
-1. クローン
-2. yarnセットアップ
-
+- クローン
+```
+$ git clone git@github.com:taka-p/starter_kit_front_v2.git
+```
+- yarnセットアップ
 ```
 $ npm run yarn_init
 ```
-
-3. 諸々グローバルインストール
-
+- 諸々グローバルインストール
 ```
 $ yarn global_init
 ```
 
 ### 各種コマンド
-
 ```
 # assets_dev/build/配下のディレクトリ削除
 $ yarn clean-dev
@@ -35,3 +34,4 @@ $ yarn start
 - pcssでFLOCSS or atomic designの設計
 - JSフレームワークはaurelia.jsとかいれてみる
 - 画像周りのチューニングタスクを追加(optim系)
+- eslint, stylelint導入(見辛そう..)
