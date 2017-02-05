@@ -1,0 +1,48 @@
+{
+  "name": "front_ver2",
+  "version": "1.0.0",
+  "description": "webpack中心の構成",
+  "main": "index.js",
+  "scripts": {
+    "yarn_init": "npm install -g yarn & yarn",
+    "global_init": "yarn global add webpack browser-sync",
+    "start": "webpack -w --display-error-details --development --debug & browser-sync start --config bs-config.js",
+    "clean-dev": "rm -rf app/assets_dev/build/**",
+    "clean-prod": "rm -rf app/assets/**",
+    "build-dev": "yarn clean-dev && webpack --display-error-details --development --debug",
+    "build-prod": "yarn clean-prod && webpack --production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "hoge"
+  },
+  "keywords": [
+    "hoge"
+  ],
+  "author": "Takashi Sato",
+  "license": "ISC",
+  "devDependencies": {
+    "assets-webpack-plugin": "^3.5.1",
+    "autoprefixer": "^6.7.2",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "browser-sync": "^2.18.7",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "postcss-comment": "^1.0.3",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-import": "^9.1.0",
+    "postcss-loader": "^1.2.2",
+    "postcss-mixins": "^5.4.1",
+    "postcss-nested": "^1.0.0",
+    "postcss-nested-vars": "^0.0.2",
+    "style-loader": "^0.13.1",
+    "webpack": "1.14.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.22.0"
+  }
+}
