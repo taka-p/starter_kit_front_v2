@@ -17,11 +17,12 @@ import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 
 // postcss
+import precss from 'precss';
 import cssnext from 'postcss-cssnext';
 import cssImport from 'postcss-import';
 import cssVars from 'postcss-nested-vars';
 import cssNested from 'postcss-nested';
-import cssMixins from 'postcss-mixins';
+import cssMixins from 'postcss-sassy-mixins';
 import cssComment from 'postcss-comment';
 import autoprefixer from 'autoprefixer';
 
@@ -93,6 +94,9 @@ const webpackCommon = {
     loaders: [
       {
         test: /\.js$/,
+        exclude: [
+          '/node_modules/'
+        ],
         include: [
           path.resolve(PATH.SRC.JS)
         ],
@@ -100,35 +104,31 @@ const webpackCommon = {
       },
       {
         test: /\.pcss$/,
+        include: [
+          path.resolve(PATH.SRC.PCSS)
+        ],
         loader: ExtractTextPlugin.extract(
-          'style-loader',
-          'css-loader?-url&minimize&sourceMap',
-          'postcss-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true',
+          'style',
+            'css',
+            'postcss'
         )
       },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         loader: ExtractTextPlugin.extract(
-          'style-loader',
-          'css-loader',
-          'postcss-loader',
+          'style',
+          'css',
+          'postcss'
         )
       },
-    ]
-  },
-
-  // postcss
-  postcss: (webpack) => {
-    return [
-      cssImport({
-        addDependencyTo: webpack
-      }),
-      cssnext,
-      cssVars,
-      cssNested,
-      cssMixins,
-      cssComment,
-      autoprefixer
+      // {
+      //   test: /\.scss$/,
+      //   loader: ExtractTextPlugin.extract(
+      //     'style-loader',
+      //     'css-loader',
+      //     'postcss-loader',
+      //   )
+      // },
     ]
   },
 
@@ -143,8 +143,8 @@ const webpackCommon = {
     timings: true,
     chunks: DEBUG,
     chunkModules: DEBUG,
-    cached: DEBUG,
-    cachedAssets: DEBUG,
+    cached: false,
+    cachedAssets: false,
   },
 
   plugins: [
@@ -157,7 +157,6 @@ const webpackCommon = {
     // convert  inline to extra
     new ExtractTextPlugin(
       FILE_FORMAT + '.css',
-      { allChunks: true }
     ),
     ...(DEV ?
         // dev only plugin
@@ -210,6 +209,20 @@ const webpackConfig = [{
     extensions: ['', '.js'],
   },
 
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: [
+          '/node_modules/'
+        ],
+        include: [
+          path.resolve(PATH.SRC.JS)
+        ],
+        loader: 'babel'
+      },
+  ]},
+
   ...webpackCommon,
 },
 {
@@ -220,14 +233,40 @@ const webpackConfig = [{
   },
 
   output: {
-    publicPath: '/',
     path: DEV ? PATH.BUILD.CSS : PATH.CSS,
     filename: FILE_FORMAT + '.css',
-    sourcePrefix: '  ',
   },
 
   resolve: {
-    extensions: ['', '.pcss'],
+    extensions: ['', '.css'],
+  },
+
+  module: {
+    loaders: [
+      {
+        test: /\.pcss$/,
+        loader: ExtractTextPlugin.extract(
+          'style-loader',
+          'css-loader?importLoaders=1',
+          'postcss-loader'
+        )
+      }
+    ]
+  },
+
+  // postcss
+  postcss: webpack => {
+    return [
+      cssImport({
+        addDependencyTo: webpack
+      }),
+      cssMixins(),
+      cssVars(),
+      cssNested(),
+      cssnext(),
+      cssComment(),
+      autoprefixer(),
+    ]
   },
 
   ...webpackCommon,

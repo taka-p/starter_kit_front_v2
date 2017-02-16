@@ -1,0 +1,21 @@
+@import "../foundation/_variable.scss";
+@import "../object/utility/_main.scss";
+
+.font {
+  font-size:$font_size_base;
+}
+
+
+$hoge: 100;
+$fuga: 200;
+
+.hoged {
+  //  width: $hoge;
+  //height: 100%;
+  line-height: $fuga;
+  .fugasda {
+    .foo {
+
+    }
+  }
+}

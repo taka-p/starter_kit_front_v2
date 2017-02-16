@@ -1,0 +1,21 @@
+{
+  "use": [
+    "postcss-easy-import",
+    "postcss-inline-comment",
+    "postcss-nested",
+    "postcss-nested-vars",
+    "postcss-for",
+    "postcss-conditionals",
+    "postcss-each",
+    "postcss-math",
+    "postcss-sassy-mixins",
+    "postcss-functions",
+    "postcss-extend",
+    "postcss-assets",
+    "postcss-cssnext"
+  ],
+  "local-plugins": true,
+  "log": true,
+  "input": "app/assets_dev/src/pcss/entry/*.css",
+  "dir": "app/assets_dev/build/css"
+}
