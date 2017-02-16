@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "yarn_init": "npm install -g yarn && yarn && export PATH=$(yarn global bin):$PATH && source ~/.bashrc && source ~/.zshrc",
-    "global_init": "yarn global add webpack browser-sync postcss-cli",
+    "global_init": "yarn global add gulp webpack browser-sync",
     "watch_css": "gulp watchCss",
-    "start": "webpack -w --display-error-details --development --debug & browser-sync start --config bs-config.js",
+    "watch_js": "webpack -w --display-error-details --development --debug",
+    "server": "browser-sync start --config bs-config.js",
+    "start": "yarn watch_css & yarn watch_js & yarn server",
     "clean-dev": "rm -rf app/assets_dev/build/**",
     "clean-prod": "rm -rf app/assets/**",
     "build-dev": "yarn clean-dev && webpack --display-error-details --development --debug",
@@ -42,29 +44,16 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.1",
     "path": "^0.12.7",
-    "postcss": "^5.2.13",
     "postcss-assets": "^4.1.0",
-    "postcss-conditionals": "^2.1.0",
     "postcss-cssnext": "^2.9.0",
-    "postcss-each": "^0.9.3",
-    "postcss-easy-import": "^2.0.0",
-    "postcss-extend": "^1.0.5",
-    "postcss-for": "^2.1.1",
-    "postcss-functions": "^2.1.1",
-    "postcss-inline-comment": "^3.0.0",
-    "postcss-loader": "^1.2.2",
-    "postcss-math": "^0.0.7",
-    "postcss-nested": "^1.0.0",
-    "postcss-nested-vars": "^0.0.2",
     "postcss-reporter": "^3.0.0",
-    "postcss-sassy-mixins": "^2.0.0",
     "style-loader": "^0.13.1",
     "stylelint": "^7.8.0",
-    "webpack": "1.14.0"
+    "webpack": "1.14.0",
+    "webpack-notifier": "^1.5.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.22.0",
-    "global": "^4.3.1",
-    "postcss-cli": "^2.6.0"
+    "global": "^4.3.1"
   }
 }

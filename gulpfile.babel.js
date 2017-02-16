@@ -10,10 +10,11 @@
 import gulp    from 'gulp';
 
 /* css plugin */
-import sass         from 'gulp-sass';
-import postcss      from 'gulp-postcss';
+import sass              from 'gulp-sass';
+import postcss         from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
-import reporter     from 'postcss-reporter'; // ログ整形
+import reporter        from 'postcss-reporter'; // ログ整形
+import assets          from 'postcss-assets';
 
 /* img plugin */
 import path from 'path';
@@ -28,6 +29,7 @@ gulp.task('cssDev', () => {
   const processors = [
     // stylelint(stylelintrc),
     // doiuse({browsers: conf.browsers, ignore: conf.ignores}),
+    assets(),
     autoprefixer(),
     reporter()
   ];

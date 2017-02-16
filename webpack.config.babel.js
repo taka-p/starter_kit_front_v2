@@ -15,19 +15,7 @@ import 'babel-polyfill';
 import path from 'path';
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
-
-// postcss
-import precss from 'precss';
-import cssnext from 'postcss-cssnext';
-import cssImport from 'postcss-import';
-import cssVars from 'postcss-nested-vars';
-import cssNested from 'postcss-nested';
-import cssMixins from 'postcss-sassy-mixins';
-import cssComment from 'postcss-comment';
-import autoprefixer from 'autoprefixer';
-
-// else
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import Notifer from 'webpack-notifier';
 
 /**
  * enviroments config
@@ -45,12 +33,8 @@ console.log(
 const APP = 'app';
 const ENTRY = {
   JS: {
-    MAIN: 'main.js',
-    STYLE: 'style.js'
+    MAIN: 'main.js'
   },
-  CSS: {
-    MAIN: 'main.pcss',
-  }
 };
 const APP_DIR = __dirname + `/${APP}/`;
 const ASSETS = DEV ? APP_DIR + 'assets_dev/' :  APP_DIR + 'assets/' ;
@@ -59,15 +43,12 @@ const PATH = {
   // src
   SRC: {
     JS: ASSETS + 'src/js/',
-    PCSS: ASSETS + 'src/pcss/'
   },
   // dist
   BUILD: {
     JS: ASSETS + 'build/js/',
-    CSS: ASSETS + 'build/css/'
   },
   JS: ASSETS + 'js/',
-  CSS: ASSETS + 'css/',
   IMG: ASSETS + 'img/'
 };
 
@@ -102,33 +83,6 @@ const webpackCommon = {
         ],
         loader: 'babel'
       },
-      {
-        test: /\.pcss$/,
-        include: [
-          path.resolve(PATH.SRC.PCSS)
-        ],
-        loader: ExtractTextPlugin.extract(
-          'style',
-            'css',
-            'postcss'
-        )
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract(
-          'style',
-          'css',
-          'postcss'
-        )
-      },
-      // {
-      //   test: /\.scss$/,
-      //   loader: ExtractTextPlugin.extract(
-      //     'style-loader',
-      //     'css-loader',
-      //     'postcss-loader',
-      //   )
-      // },
     ]
   },
 
@@ -143,8 +97,8 @@ const webpackCommon = {
     timings: true,
     chunks: DEBUG,
     chunkModules: DEBUG,
-    cached: false,
-    cachedAssets: false,
+    cached: DEBUG,
+    cachedAssets: DEBUG,
   },
 
   plugins: [
@@ -153,16 +107,15 @@ const webpackCommon = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || (DEV ? 'development' : 'production')),
       },
+      '__DEV__': DEV,
+      '__PROD__': !DEV
     }),
-    // convert  inline to extra
-    new ExtractTextPlugin(
-      FILE_FORMAT + '.css',
-    ),
     ...(DEV ?
         // dev only plugin
         [
           // don"t show errors on compling
           // new webpack.NoErrorsPlugin(),
+          new Notifer(),
         ] :
         // prod only plugin
         [
@@ -188,10 +141,10 @@ const webpackCommon = {
   ],
 
   // https://webpack.github.io/docs/configuration.html#devtool
-  devtool: DEV ? 'source-map' : false,
+  devtool: DEV ? 'inline-source-map' : false,
 };
 
-const webpackConfig = [{
+const webpackConfig = {
   entry: {
     main: [
       PATH.SRC.JS + ENTRY.JS.MAIN
@@ -206,7 +159,7 @@ const webpackConfig = [{
   },
 
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.min.js'],
   },
 
   module: {
@@ -224,52 +177,6 @@ const webpackConfig = [{
   ]},
 
   ...webpackCommon,
-},
-{
-  entry: {
-    main: [
-      PATH.SRC.PCSS + ENTRY.CSS.MAIN
-    ]
-  },
-
-  output: {
-    path: DEV ? PATH.BUILD.CSS : PATH.CSS,
-    filename: FILE_FORMAT + '.css',
-  },
-
-  resolve: {
-    extensions: ['', '.css'],
-  },
-
-  module: {
-    loaders: [
-      {
-        test: /\.pcss$/,
-        loader: ExtractTextPlugin.extract(
-          'style-loader',
-          'css-loader?importLoaders=1',
-          'postcss-loader'
-        )
-      }
-    ]
-  },
-
-  // postcss
-  postcss: webpack => {
-    return [
-      cssImport({
-        addDependencyTo: webpack
-      }),
-      cssMixins(),
-      cssVars(),
-      cssNested(),
-      cssnext(),
-      cssComment(),
-      autoprefixer(),
-    ]
-  },
-
-  ...webpackCommon,
-}];
+};
 
 export default webpackConfig;
