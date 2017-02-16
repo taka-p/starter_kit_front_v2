@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "yarn_init": "npm install -g yarn && yarn && export PATH=$(yarn global bin):$PATH && source ~/.bashrc && source ~/.zshrc",
-    "global_init": "yarn global add gulp webpack browser-sync",
+    "global_init": "yarn global add gulp webpack@1.14.0 browser-sync",
     "watch_css": "gulp watchCss",
     "watch_js": "webpack -w --display-error-details --development --debug",
     "server": "browser-sync start --config bs-config.js",
