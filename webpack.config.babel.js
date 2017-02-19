@@ -42,7 +42,7 @@ const FILE_FORMAT = DEV ? '[name]' : '[name]-[hash]';
 const PATH = {
   // src
   SRC: {
-    JS: ASSETS + 'src/js/',
+    JS: ASSETS + 'src/js/entry/',
   },
   // dist
   BUILD: {
@@ -75,9 +75,9 @@ const webpackCommon = {
     loaders: [
       {
         test: /\.js$/,
-        exclude: [
-          '/node_modules/'
-        ],
+        // exclude: [
+        //   '/node_modules/'
+        // ],
         include: [
           path.resolve(PATH.SRC.JS)
         ],

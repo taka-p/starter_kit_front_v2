@@ -10,15 +10,3 @@
 //   console.log('end');
 // })();
 
-const hoge = 'hoge';
-
-class Hoge {
-  constructor(hoge) {
-    this.hoge + hoge;
-  }
-  init() {
-    this.name = 'hoge';
-  }
-}
-
-new Hoge('foo');
